@@ -8,6 +8,7 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 ## Example usage
 
 ```python
+from webglobedns import WebglobeDnsApi, WebglobeDnsRecord, WebglobeDnsApiException
 
 api_url = "https://api.webglobe.com"
 api_username = "dns-subaccount@domain.tld"
