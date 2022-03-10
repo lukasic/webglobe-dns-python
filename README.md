@@ -5,6 +5,13 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 **Alpha version. Do not use in production!**
 
 
+## Install
+
+```bash
+pip install git+https://github.com/lukasic/webglobe-dns-python@0.1.0
+```
+
+
 ## Example usage
 
 ```python
