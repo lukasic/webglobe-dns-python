@@ -70,7 +70,7 @@ class WebglobeDnsRecord:
 		url = "/{domain_id}/dns".format(
 			domain_id=self.zone.id)
 		r = self.zone.api._post(url, self.__export())
-		print(r.json())
+		self.id = r.json()['data']['id']
 		self.__lock()
 
 	def save(self):
@@ -93,6 +93,8 @@ class WebglobeDnsRecord:
 			domain_id=self.zone.id,
 			record_id=self.id)
 		r = self.zone.api._delete(url, self.__export())
+		self.id = None
+		self.__locked = {}
 		print(r.json(), r.status_code)
 
 	def bindformat(self):
