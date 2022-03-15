@@ -40,7 +40,6 @@ class ResultSet:
 		for k,v in kwargs.items():
 			f = lambda x: getattr(x, k) == v
 			filtered = list(filter(f, filtered))
-			print(filtered)
 		return ResultSet(filtered)
 
 	def sort(self, key="id"):
@@ -57,6 +56,9 @@ class WebglobeDnsRecord:
 		assert type(zone) == WebglobeDnsZone	
 		self.zone = zone
 		self.id = id
+		self._aux = None
+		self._type = None
+		self._data = None
 		self.__locked = {}
 
 		if not lazy:
@@ -65,13 +67,49 @@ class WebglobeDnsRecord:
 	def _load(self):
 		raise AssertionError("Not implemented yet.")
 
+	@property
+	def type(self):
+		return self._type
+
+	@type.setter
+	def type(self, val):
+		self._type = val.upper()
+
+	@property
+	def data(self):
+		return self._data
+
+	@data.setter
+	def data(self, val):
+		if self.type == "MX":
+			if not val.endswith("."):
+				raise ValueError("MX record data must be in FQDN format and end with dot.")
+		self._data = val
+
+	@property
+	def aux(self):
+		return self._aux
+
+	@aux.setter
+	def aux(self, val):
+		if self.type != "MX":
+			raise AttributeError("WebglobeDnsRecord type -> %s does not have attribute 'aux'." % self.type)
+		self._aux = int(val)
+
 	def create(self):
 		assert not self.id
+		self.validate()
+
 		url = "/{domain_id}/dns".format(
 			domain_id=self.zone.id)
+
 		r = self.zone.api._post(url, self.__export())
 		self.id = r.json()['data']['id']
 		self.__lock()
+
+	def validate(self):
+		if self.type == "MX" and not self.aux:
+			raise AssertionError("Missing priority for MX (attribute aux)")
 
 	def save(self):
 		if not self.ischanged():
@@ -80,11 +118,12 @@ class WebglobeDnsRecord:
 		if not self.id:
 			return self.create()
 
+		self.validate()
+
 		url = "/{domain_id}/dns/{record_id}".format(
 			domain_id=self.zone.id,
 			record_id=self.id)
 		r = self.zone.api._put(url, self.__export())
-		print(r.json())
 		self.__lock()
 
 	def delete(self):
@@ -95,17 +134,15 @@ class WebglobeDnsRecord:
 		r = self.zone.api._delete(url, self.__export())
 		self.id = None
 		self.__locked = {}
-		print(r.json(), r.status_code)
 
 	def bindformat(self):
-		return "{name} IN {type} {ttl} {data}".format(
-			name=self.name,
-			type=self.type,
-			ttl=self.ttl,
-			data=self.data)
+		if self.type != "MX":
+			return "{name} {ttl} {type} {data}".format(**self.__export())
+		else:
+			return "{name} {ttl} {type} {aux} {data}".format(**self.__export())
 
 	def __repr__(self):
-		return "<WebglobeDnsRecord({id}>".format(id=self.id)
+		return "<WebglobeDnsRecord({id})".format(id=self.id)
 
 		#return "<WebglobeDnsRecord({id} -> {type}/{name}>".format(
 		#	id=self.id,
@@ -113,12 +150,15 @@ class WebglobeDnsRecord:
 		#	name=self.name)
 
 	def __export(self):
-		return {
+		obj = {
 			'type': self.type,
 			'name': self.name,
 			'ttl': self.ttl,
 			'data': self.data
 		}
+		if self.type == "MX":
+			obj['aux'] = self.aux
+		return obj
 
 	def __lock(self):
 		self.__locked = self.__export()
@@ -134,6 +174,8 @@ class WebglobeDnsRecord:
 		r.name = data['name']
 		r.data = data['data']
 		r.ttl = data['ttl']
+		if r.type == "MX":
+			r.aux = data['aux']
 		r.__lock()
 		return r
 
@@ -175,7 +217,6 @@ class WebglobeDnsZone:
 
 class WebglobeDnsApiException(Exception):
 	def __init__(self, error):
-		print(error)
 		self.code = error['code']
 		self.message = error['message']
 		super(Exception, self).__init__(error['message'])
