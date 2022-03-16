@@ -4,11 +4,21 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 
 **Alpha version. Do not use in production!**
 
+## Changelog
+
+0.2.0
+
+* Support MX records
+
+0.1.0
+
+* Start project, support creating, editing and deleting of A/AAAA/CNAME records
+
 
 ## Install
 
 ```bash
-pip install git+https://github.com/lukasic/webglobe-dns-python@0.1.0
+pip install git+https://github.com/lukasic/webglobe-dns-python@0.2.0
 ```
 
 
