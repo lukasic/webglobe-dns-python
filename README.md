@@ -18,7 +18,7 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 ## Install
 
 ```bash
-pip install git+https://github.com/lukasic/webglobe-dns-python@0.2.0
+pip install git+https://github.com/lukasic/webglobe-dns-python@0.2.1
 ```
 
 
