@@ -6,6 +6,10 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 
 ## Changelog
 
+0.2.1
+
+* Fix setup.py
+
 0.2.0
 
 * Support MX records
