@@ -1,7 +1,7 @@
 from os.path import join as path_join, dirname
 from setuptools import setup, find_packages
 
-version = '0.1'
+version = '0.3'
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -17,7 +17,7 @@ setup(
     author='Lukas Kasic',
     author_email='src@lksc.sk',
     url='https://github.com/lukasic/webglobe-dns-python',
-    packages=find_packages(),
+    py_modules=["webglobedns"],
     install_requires = install_reqs,
     keywords=['webglobe', "dns", "hosting"],
     classifiers=[
