@@ -47,6 +47,9 @@ class ResultSet:
         s.sort(key=lambda x: getattr(x, key))
         return ResultSet(s)
 
+    def count(self):
+        return len(self.data)
+
     def all(self):
         return self
 
