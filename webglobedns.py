@@ -172,7 +172,12 @@ class WebglobeDnsRecord:
         r = WebglobeDnsRecord(zone, data['id'], lazy=True)
         r.type = data['type']
         r.name = data['name']
-        r.data = data['data']
+        # override setter for MX type:
+        #   existing zone can contain records in non-fqdn format
+        if r.type == "MX":
+            r._data = data['data']
+        else:
+            r.data = data['data']
         r.ttl = data['ttl']
         if r.type == "MX":
             r.aux = data['aux']
