@@ -13,9 +13,10 @@ api_password = None
 class ResultSet:
     def __init__(self, data):
         assert type(data) in (list, set)
-        t = type(data[0])
-        for i in data:
-            assert type(i) == t
+        if len(data) > 0:
+            t = type(data[0])
+            for i in data:
+                assert type(i) == t
         self.data = list(data)
 
     def __len__(self):
