@@ -2,6 +2,7 @@
 
 import requests
 import json
+import ipaddress
 
 jp = lambda x: print(json.dumps(x, indent=2))
 
@@ -88,6 +89,10 @@ class WebglobeDnsRecord:
         if self.type == "MX":
             if not val.endswith("."):
                 raise ValueError("MX record data must be in FQDN format and end with dot.")
+        if self.type == "A":
+            dummy = ipaddress.IPv4Address(val)
+        if self.type == "AAAA":
+            dummy = ipaddress.IPv6Address(val)
         self._data = val
 
     @property
