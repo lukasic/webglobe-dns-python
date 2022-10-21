@@ -6,6 +6,11 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 
 ## Changelog
 
+0.3.0
+
+* Add validation of A/AAAA during assignment [#1]
+* Support 2FA login (OTP, SMS code) [#5]
+
 0.2.2
 
 * Fix filtering records with no match [#3]
@@ -26,7 +31,7 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 ## Install
 
 ```bash
-pip install git+https://github.com/lukasic/webglobe-dns-python@0.2.1
+pip install git+https://github.com/lukasic/webglobe-dns-python@0.3.0
 ```
 
 
@@ -43,6 +48,10 @@ try:
 
   w = WebglobeDnsApi(api_url)
   w.login(api_username, api_password)
+
+  # or login with otp / sms_code
+  # w.login(api_username, api_password, otp=123456)
+  # w.login(api_username, api_password, sms_code=123456)
 
   # list zones
   zones = w.zones.all()

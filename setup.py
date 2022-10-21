@@ -1,7 +1,7 @@
 from os.path import join as path_join, dirname
 from setuptools import setup, find_packages
 
-version = '0.2.2'
+version = '0.3.0'
 
 with open("README.md", "r") as f:
     long_description = f.read()
