@@ -250,13 +250,19 @@ class WebglobeDnsApi:
         self.token = None
         self.headers = None
 
-    def login(self, username, password):
+    def login(self, username, password, otp=None, sms_code=None):
+        login_data = {
+            "login": username,
+            "password": password
+            }
+        if otp:
+            login_data["otp"] = otp
+        if sms_code:
+            login_data["sms"] = sms_code
+
         r = requests.post(
                 self.api_url + "/auth/login",
-                json={
-                    "login": username,
-                    "password": password
-                })
+                json=login_data)
         if r.status_code != 200:
             raise WebglobeDnsApiException(r.json()['error'])
         self.token = r.json()['data']['token']
