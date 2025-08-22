@@ -6,6 +6,10 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 
 ## Changelog
 
+0.3.1
+
+* Follow api change, reg_domains -> dns_domains
+
 0.3.0
 
 * Add validation of A/AAAA during assignment [#1]
