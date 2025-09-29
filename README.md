@@ -6,6 +6,10 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 
 ## Changelog
 
+0.4.0
+
+* Use 'all' section for getting list of domains instead dns_domains
+
 0.3.1
 
 * Follow api change, reg_domains -> dns_domains
@@ -35,7 +39,7 @@ Simple python client for DNS records manipulation for zones hosted by https://ww
 ## Install
 
 ```bash
-pip install git+https://github.com/lukasic/webglobe-dns-python@0.3.1
+pip install git+https://github.com/lukasic/webglobe-dns-python@0.4.0
 ```
 
 
