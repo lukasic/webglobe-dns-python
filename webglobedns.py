@@ -310,10 +310,9 @@ class WebglobeDnsApi:
     @property
     def zones(self):
         r = self._get("/domains?full=true").json()
-        domains = r['domains']['dns_domains']
+        domains = r['all']
 
         return ResultSet([
             WebglobeDnsZone.from_json(self, d)
-            for d in domains['data']
-            if d['status'] == "hotovo" ])
+            for d in domains])
 
